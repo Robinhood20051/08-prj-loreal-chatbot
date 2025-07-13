@@ -9,6 +9,10 @@ displayMessage(
   "ai"
 );
 
+// Configuration - Replace with your Cloudflare Worker URL
+const CLOUDFLARE_WORKER_URL =
+  "https://lorealworker.rzaw001.workers.dev";
+
 // Store conversation history
 let messageHistory = [
   {
@@ -26,30 +30,29 @@ async function callChatGPT(userMessage) {
       content: userMessage,
     });
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    // Send request to Cloudflare Worker instead of directly to OpenAI
+    const response = await fetch(CLOUDFLARE_WORKER_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${api_Key}`, // Make sure this matches your secrets.js variable name
       },
       body: JSON.stringify({
-        model: "gpt-4o",
-        messages: messageHistory,
-        max_tokens: 150,
-        temperature: 0.7,
+        messages: messageHistory, // Send the entire conversation history
       }),
     });
 
+    // Check if the request was successful
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("API Error:", errorData);
-      throw new Error(errorData.error?.message || "API request failed");
+      console.error("Worker Error:", errorData);
+      throw new Error(errorData.error?.message || "Worker request failed");
     }
 
+    // Get the response data from Cloudflare Worker
     const data = await response.json();
     const aiResponse = data.choices[0].message.content;
 
-    // Add AI response to history
+    // Add AI response to history for future context
     messageHistory.push({
       role: "assistant",
       content: aiResponse,
@@ -58,8 +61,8 @@ async function callChatGPT(userMessage) {
     return aiResponse;
   } catch (error) {
     console.error("Error details:", error);
-    if (error.message.includes("API key")) {
-      return "Error: Invalid API key. Please check your configuration.";
+    if (error.message.includes("Worker")) {
+      return "Error: Unable to connect to the AI service. Please check your Cloudflare Worker configuration.";
     }
     return "I apologize, but I am having trouble connecting right now. Please try again later.";
   }

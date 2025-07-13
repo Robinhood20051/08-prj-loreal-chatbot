@@ -1,3 +1,30 @@
+/* —— CSS Variables for L'Oréal Theme Colors —— */
+:root {
+  /* L'Oréal Primary Colors */
+  --loreal-gold: #e3a535;
+  --loreal-black: #000000;
+  --loreal-white: #ffffff;
+  --loreal-gray: #333333;
+
+  /* Light Mode Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #000000;
+  --text-primary: #333333;
+  --text-secondary: #ffffff;
+  --chat-bg: linear-gradient(145deg, #ffffff 0%, #faf6f0 100%);
+  --footer-bg: rgba(255, 255, 255, 0.9);
+}
+
+/* Dark Mode Colors */
+[data-theme="dark"] {
+  --bg-primary: #000000;
+  --bg-secondary: #333333;
+  --text-primary: #ffffff;
+  --text-secondary: #333333;
+  --chat-bg: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
+  --footer-bg: rgba(0, 0, 0, 0.9);
+}
+
 /* —— basic reset —— */
 * {
   box-sizing: border-box;
@@ -8,12 +35,19 @@
 /* —— body + fonts —— */
 body {
   font-family: "Montserrat", Arial, Helvetica, sans-serif;
-  color: #333;
+  color: var(--text-primary);
   min-height: 100vh;
   display: grid;
   grid-template-columns: 50% 50%;
   position: relative;
-  background: linear-gradient(to right, #000 0%, #000 50%, #fff 50%, #ffffff 100%);
+  background: linear-gradient(
+    to right,
+    var(--bg-secondary) 0%,
+    var(--bg-secondary) 50%,
+    var(--bg-primary) 50%,
+    var(--bg-primary) 100%
+  );
+  transition: all 0.3s ease;
 }
 
 /* L'Oréal Logo */
@@ -23,21 +57,21 @@ body {
   left: 25%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  width: min(45vw, 600px);
-  height: min(45vw, 600px);
+  width: min(55vw, 700px);
+  height: min(55vw, 700px);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .logo-container::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 100%;
-  border: min(0.3vw, 3px) solid #e3a535;
+  border: min(0.4vw, 4px) solid #e3a535;
   border-radius: 50%;
-  box-shadow: 0 0 min(2vw, 20px) rgba(227, 165, 53, 0.4);
+  box-shadow: 0 0 min(3vw, 30px) rgba(227, 165, 53, 0.4);
 }
 
 .loreal-logo {
@@ -65,6 +99,7 @@ body {
   text-align: center;
   padding-top: 20px;
   width: 100%;
+  position: relative;
 }
 
 .site-title {
@@ -73,6 +108,40 @@ body {
   margin-bottom: 20px;
   color: #e3a535;
   letter-spacing: 1px;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, var(--loreal-gold) 0%, #c49b2e 100%);
+  color: var(--loreal-white);
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(227, 165, 53, 0.2);
+}
+
+.theme-toggle:hover {
+  background: linear-gradient(135deg, #c49b2e 0%, var(--loreal-gold) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(227, 165, 53, 0.3);
+}
+
+.theme-toggle:focus {
+  outline: 2px solid var(--loreal-gold);
+  outline-offset: 2px;
+}
+
+.theme-toggle .material-icons {
+  font-size: 24px;
 }
 
 /* chat window */
@@ -90,9 +159,15 @@ body {
   font-size: 20px;
   line-height: 1.5;
   overflow-y: auto;
-  background: linear-gradient(145deg, #ffffff 0%, #faf6f0 100%);
+  background: var(--chat-bg);
   white-space: pre-line;
   box-shadow: 0 4px 20px rgba(227, 165, 53, 0.1);
+}
+
+/* Dark mode chat window */
+[data-theme="dark"] .chat-window {
+  color: var(--text-primary);
+  border-color: var(--loreal-gold);
 }
 
 /* messages */
@@ -117,6 +192,13 @@ body {
   border-radius: 15px;
   border: 1px solid #e3a535;
   max-width: 80%;
+}
+
+/* Dark mode messages */
+[data-theme="dark"] .msg.ai {
+  color: var(--text-primary);
+  background: var(--loreal-gray);
+  border-color: var(--loreal-gold);
 }
 
 /* input row */
@@ -197,9 +279,15 @@ body {
   text-align: center;
   font-size: 14px;
   color: #666;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--footer-bg);
   padding: 15px 0;
   margin: 0;
+}
+
+/* Dark mode footer */
+[data-theme="dark"] .site-footer {
+  background: var(--footer-bg);
+  color: var(--text-primary);
 }
 
 .site-footer nav {
@@ -221,7 +309,13 @@ body {
   body {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
-    background: linear-gradient(to bottom, #000 0%, #000 50%, #fff 50%, #fff 100%);
+    background: linear-gradient(
+      to bottom,
+      var(--bg-secondary) 0%,
+      var(--bg-secondary) 50%,
+      var(--bg-primary) 50%,
+      var(--bg-primary) 100%
+    );
   }
 
   .logo-container {
