@@ -10,8 +10,7 @@ displayMessage(
 );
 
 // Configuration - Replace with your Cloudflare Worker URL
-const CLOUDFLARE_WORKER_URL =
-  "https://lorealworker.rzaw001.workers.dev";
+const CLOUDFLARE_WORKER_URL = "https://lorealworker.rzaw001.workers.dev";
 
 // Store conversation history
 let messageHistory = [
@@ -89,7 +88,7 @@ chatForm.addEventListener("submit", async (e) => {
   userInput.value = "";
 
   // Show loading state
-  const loadingMsg = displayMessage("Thinking...", "ai");
+  const loadingMsg = displayMessage("Consulting our best...", "ai");
 
   // Get and display AI response
   const aiResponse = await callChatGPT(userMessage);
